@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dolní Morava — lyžování, Sky Bridge & wellness — Místa, která stojí za návštěvu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:       #141C2B;
+      --parchment: #F8F3EB;
+      --warm:      #EFE6D8;
+      --copper:    #C97942;
+      --sage:      #3D6B52;
+      --snow:      #2260A0;
+      --muted:     #8A7F74;
+      --divider:   #DDD5C8;
+      --white:     #FFFFFF;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--parchment); color: var(--ink); line-height: 1.7; }
+
+    .topbar { position: sticky; top: 0; z-index: 100; background: rgba(20,28,43,0.96); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(201,121,66,0.25); padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 52px; }
+    .topbar-back { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.6); text-decoration: none; transition: color 0.15s; }
+    .topbar-back:hover { color: var(--copper); }
+    .topbar-title { font-family: 'Playfair Display', serif; font-size: 14px; font-style: italic; color: rgba(255,255,255,0.4); }
+
+    .hero { position: relative; height: 520px; overflow: hidden; }
+    .hero-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 40%; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,15,25,0.88) 0%, rgba(10,15,25,0.50) 40%, rgba(10,15,25,0.20) 70%, transparent 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 48px 40px; }
+    .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+    .hero-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--copper); }
+    .hero h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(32px,5.5vw,62px); line-height: 1.05; color: var(--white); letter-spacing: -0.02em; margin-bottom: 6px; }
+    .hero h1 em { font-style: italic; font-weight: 400; font-size: 0.6em; color: rgba(255,255,255,0.55); display: block; letter-spacing: 0.05em; }
+    .hero-meta { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .hero-badge { background: rgba(255,255,255,0.12); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.2); border-radius: 100px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; padding: 4px 12px; color: rgba(255,255,255,0.80); }
+    .hero-caption { margin-top: 10px; font-size: 12px; font-style: italic; color: rgba(255,255,255,0.35); }
+
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 52px 24px 80px; display: grid; grid-template-columns: 1fr 280px; gap: 48px; align-items: start; }
+    .sidebar { position: sticky; top: 68px; }
+    .infobox { background: var(--white); border-radius: 12px; overflow: hidden; border: 1px solid var(--divider); box-shadow: 0 2px 12px rgba(20,28,43,0.06); }
+    .infobox-head { background: var(--ink); padding: 14px 18px; font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--copper); }
+    .infobox-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .infobox-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .infobox-table tr { border-bottom: 1px solid var(--divider); }
+    .infobox-table tr:last-child { border-bottom: none; }
+    .infobox-table td { padding: 7px 14px; vertical-align: top; line-height: 1.4; }
+    .infobox-table td:first-child { font-weight: 600; color: var(--muted); font-size: 11px; white-space: nowrap; width: 40%; text-transform: uppercase; letter-spacing: 0.04em; }
+
+    .article { min-width: 0; }
+    .lead { font-size: 18px; line-height: 1.75; color: var(--ink); margin-bottom: 24px; font-family: 'Playfair Display', serif; font-style: italic; }
+    p { font-size: 15.5px; line-height: 1.8; color: #333; margin-bottom: 14px; }
+    strong { color: var(--ink); font-weight: 600; }
+    .section { margin-top: 44px; }
+    .section-heading { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px; color: var(--ink); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid var(--warm); position: relative; }
+    .section-heading::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 48px; height: 2px; background: var(--copper); }
+    .sub-heading { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--snow); margin: 22px 0 10px; }
+    .sub-heading.sage { color: var(--sage); }
+    .ornament { text-align: center; color: var(--copper); font-size: 16px; letter-spacing: 0.8em; opacity: 0.5; margin: 32px 0; }
+
+    .gallery { display: grid; gap: 8px; margin: 24px 0; }
+    .g-1 { grid-template-columns: 1fr; }
+    .g-2 { grid-template-columns: 1fr 1fr; }
+    .g-3 { grid-template-columns: 1fr 1fr 1fr; }
+    .gallery-item { position: relative; overflow: hidden; border-radius: 8px; cursor: zoom-in; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s ease; }
+    .gallery-item:hover img { transform: scale(1.04); }
+    .gallery-item figcaption { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(10,15,25,0.78)); color: rgba(255,255,255,0.85); font-size: 12px; font-style: italic; padding: 28px 10px 8px; text-align: center; }
+    .h-hero { height: 360px; } .h-tall { height: 260px; } .h-medium { height: 200px; } .h-short { height: 160px; }
+
+    .highlight-box { background: var(--white); border: 1px solid var(--divider); border-left: 4px solid var(--copper); border-radius: 0 8px 8px 0; padding: 18px 22px; margin: 24px 0; }
+    .highlight-box h4 { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--copper); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+    .highlight-box p { font-size: 14px; margin-bottom: 8px; }
+    .highlight-box p:last-child { margin-bottom: 0; }
+    .highlight-box.blue { border-left-color: var(--snow); }
+    .highlight-box.blue h4 { color: var(--snow); }
+    .highlight-box.green { border-left-color: var(--sage); }
+    .highlight-box.green h4 { color: var(--sage); }
+
+    /* Slope difficulty cards */
+    .slope-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 16px 0; }
+    .slope-card { background: var(--white); border: 1px solid var(--divider); border-top: 4px solid var(--muted); border-radius: 0 0 8px 8px; padding: 14px 16px; }
+    .slope-card.modra { border-top-color: #2260A0; }
+    .slope-card.cervena { border-top-color: #B02020; }
+    .slope-card.cerna { border-top-color: #222; }
+    .slope-card .slope-diff { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; }
+    .slope-card.modra .slope-diff { color: #2260A0; }
+    .slope-card.cervena .slope-diff { color: #B02020; }
+    .slope-card.cerna .slope-diff { color: #222; }
+    .slope-card .slope-name { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.4; }
+    .slope-card .slope-len { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    /* Wellness feature boxes */
+    .wellness-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+    .wellness-card { background: var(--white); border: 1px solid var(--divider); border-radius: 8px; padding: 14px 16px; display: flex; gap: 12px; align-items: flex-start; }
+    .wellness-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .wellness-card .w-title { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+    .wellness-card .w-desc { font-size: 13px; color: #666; line-height: 1.5; }
+
+    /* Osobní komentář */
+    .personal-note { background: #FFFBF0; border: 1px solid #E8D5A3; border-radius: 10px; padding: 22px 26px 20px; margin: 36px 0; position: relative; }
+    .personal-note-label { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--copper); margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+    .personal-note-label::after { content: ''; flex: 1; height: 1px; background: #E8D5A3; }
+    .personal-note p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 16.5px; line-height: 1.8; color: #4A3F35; margin-bottom: 0; }
+    .personal-note-sig { margin-top: 14px; font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .personal-note-sig::before { content: '—'; }
+
+    .timeline { margin: 16px 0; position: relative; padding-left: 28px; }
+    .timeline::before { content: ''; position: absolute; left: 6px; top: 4px; bottom: 4px; width: 2px; background: linear-gradient(to bottom, var(--copper) 0%, var(--divider) 100%); }
+    .tl-item { position: relative; margin-bottom: 18px; }
+    .tl-item::before { content: ''; position: absolute; left: -22px; top: 5px; width: 10px; height: 10px; border-radius: 50%; background: var(--white); border: 2px solid var(--copper); }
+    .tl-year { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--copper); margin-bottom: 2px; }
+    .tl-text { font-size: 14px; line-height: 1.6; color: #444; margin: 0; }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; margin: 14px 0; }
+    .info-item { display: flex; gap: 8px; font-size: 14px; line-height: 1.5; }
+    .info-item .lbl { font-weight: 600; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; min-width: 90px; padding-top: 1px; }
+    .notice { background: #FEF9F0; border: 1px solid #E8C87A; border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #7A5A1A; margin-top: 14px; }
+    .notice.blue { background: #F0F6FF; border-color: #9AB8E0; color: #1A3A6A; }
+
+    footer { background: var(--ink); color: rgba(255,255,255,0.4); padding: 32px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 12px; }
+    footer a { color: var(--copper); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; font-weight: 500; transition: opacity 0.15s; }
+    footer a:hover { opacity: 0.7; }
+
+    .lb-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(10,15,25,0.95); align-items: center; justify-content: center; cursor: zoom-out; animation: lb-fade .2s ease; }
+    .lb-overlay.active { display: flex; }
+    @keyframes lb-fade { from { opacity: 0 } to { opacity: 1 } }
+    .lb-inner { position: relative; max-width: 92vw; max-height: 90vh; display: flex; flex-direction: column; align-items: center; gap: 12px; cursor: default; animation: lb-scale .25s cubic-bezier(.22,.68,0,1.2); }
+    @keyframes lb-scale { from { transform: scale(.9); opacity: 0 } to { transform: scale(1); opacity: 1 } }
+    .lb-inner img { max-width: 92vw; max-height: 80vh; object-fit: contain; border: 2px solid rgba(201,121,66,0.6); box-shadow: 0 20px 60px rgba(0,0,0,.8); display: block; }
+    .lb-caption { font-style: italic; color: rgba(255,255,255,0.55); font-size: 14px; text-align: center; max-width: 600px; }
+    .lb-close { position: fixed; top: 16px; right: 20px; font-size: 28px; color: var(--copper); cursor: pointer; background: none; border: none; transition: color .15s, transform .15s; z-index: 1001; }
+    .lb-close:hover { color: white; transform: scale(1.15); }
+    .lb-nav { position: fixed; top: 50%; transform: translateY(-50%); font-size: 2rem; color: rgba(255,255,255,0.5); background: rgba(20,28,43,0.6); border: none; cursor: pointer; padding: 8px 14px; transition: color .15s, background .15s; z-index: 1001; }
+    .lb-nav:hover { background: rgba(201,121,66,0.3); color: #fff; }
+    .lb-prev { left: 0; } .lb-next { right: 0; }
+
+    @media (max-width: 800px) {
+      .page-wrap { grid-template-columns: 1fr; padding: 32px 16px 60px; gap: 32px; }
+      .sidebar { position: static; }
+      .hero { height: 360px; }
+      .hero-overlay { padding: 28px 20px; }
+      .g-2, .g-3 { grid-template-columns: 1fr; }
+      .slope-grid { grid-template-columns: 1fr; }
+      .wellness-grid { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+      footer { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <nav class="topbar">
+    <a class="topbar-back" href="index.html">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Zpět na rozcestník
+    </a>
+    <span class="topbar-title">Místa, která stojí za návštěvu</span>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <img class="hero-img"
+         src="https://www.vecerni-praha.cz/wp-content/uploads/2022/12/dolni-morava-5.jpg"
+         alt="Ski areál Dolní Morava — zima" />
+    <div class="hero-overlay">
+      <p class="hero-eyebrow">🇨🇿 Pardubický kraj · Králický Sněžník</p>
+      <h1>Dolní Morava
+        <em>Lyžování, Sky Bridge & nové wellness</em>
+      </h1>
+      <div class="hero-meta">
+        <span class="hero-badge">Lyžování</span>
+        <span class="hero-badge">Sky Bridge 721</span>
+        <span class="hero-badge">MELORI aqua & spa</span>
+      </div>
+      <p class="hero-caption">Dolní Morava · ~160 km od Brna · ~200 km od Prahy</p>
+    </div>
+  </header>
+
+  <!-- OBSAH -->
+  <div class="page-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" style="order: 2;">
+      <div class="infobox">
+        <div class="infobox-head">Ski areál — základní údaje</div>
+        <img class="infobox-img"
+             src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Kr%C3%A1lick%C3%BD_Sn%C4%9B%C5%BEn%C3%ADk_1.JPG"
+             alt="Králický Sněžník — panorama" />
+        <table class="infobox-table">
+          <tr><td>Poloha</td><td>Dolní Morava, Pardubický kraj</td></tr>
+          <tr><td>Nadm. výška</td><td>základna 748 m · vrchol 1 423 m</td></tr>
+          <tr><td>Výškový rozdíl</td><td>cca 675 m</td></tr>
+          <tr><td>Sjezdovky</td><td>8 sjezdovek · celkem 10,4 km</td></tr>
+          <tr><td>Nejdelší</td><td>Vyhlídková 3,7 km (2. nejdelší v ČR)</td></tr>
+          <tr><td>Lanovky & vleky</td><td>2× 4-místná sedačka, 2× lano, 1× poma</td></tr>
+          <tr><td>Skipas od</td><td>690 Kč dospělí · 485 Kč děti (online)</td></tr>
+          <tr><td>Web</td><td>dolnimorava.cz</td></tr>
+        </table>
+      </div>
+    </aside>
+
+    <!-- HLAVNÍ OBSAH -->
+    <article class="article" style="order: 1;">
+
+      <p class="lead">Dolní Morava pod Králickým Sněžníkem je místo, které baví v každé roční době — v zimě jako jedno z největších českých lyžařských středisek, v létě pak jako domov nejdelšího visutého mostu světa a od roku 2026 i nového rozsáhlého wellness komplexu MELORI.</p>
+
+      <p>Areál leží v malebném údolí na hranici Čech a Moravy, obklopen horami Králického Sněžníku. Od Brna je to pohodlných 160 km, od Prahy asi 200 km. Jezdí sem rodiny s dětmi i zkušení lyžaři, dobrodruzi i ti, kteří hledají klid v přírodě.</p>
+
+      <div class="ornament">✦ ✦ ✦</div>
+
+      <!-- SEKCE: LYŽOVÁNÍ -->
+      <div class="section">
+        <h2 class="section-heading">Lyžování — sjezdovky a vleky</h2>
+
+        <p>Ski areál Dolní Morava patří k největším v České republice. Nabízí <strong>8 sjezdovek</strong> o celkové délce přes 10 kilometrů, které pokrývají všechny obtížnosti — od lehkých modrých tras pro začátečníky až po technicky náročné černé sjezdy. Areál je dobře zasněžovaný díky umělému zasněžování a poloze v nadmořské výšce 748–1 423 metrů.</p>
+
+        <h3 class="sub-heading">Sjezdovky podle obtížnosti</h3>
+
+        <div class="slope-grid">
+          <div class="slope-card modra">
+            <div class="slope-diff">🔵 Modrá — lehká</div>
+            <div class="slope-name">Ondráš · Kamila · Slamník</div>
+            <div class="slope-len">vhodné pro začátečníky a děti</div>
+          </div>
+          <div class="slope-card cervena">
+            <div class="slope-diff">🔴 Červená — střední</div>
+            <div class="slope-name">Radka · Bára · Sněžník</div>
+            <div class="slope-len">pro středně pokročilé lyžaře</div>
+          </div>
+          <div class="slope-card cerna">
+            <div class="slope-diff">⚫ Černá — obtížná</div>
+            <div class="slope-name">Vyhlídková · Fun-line</div>
+            <div class="slope-len">3,7 km — 2. nejdelší v ČR</div>
+          </div>
+        </div>
+
+        <p>Srdcem areálu jsou dvě čtyřmístné sedačkové lanovky — <strong>Sněžník</strong> a <strong>U Slona</strong> — které zajistí pohodlné a rychlé přepravení na hřeben. Pro menší trasy slouží vlekové lano Ondráš a Kamila, plus poma Slamník přímo u ubytování v centru vesnice.</p>
+
+        <div class="highlight-box blue">
+          <h4>Snowpark a doplňkové aktivity</h4>
+          <p>Pro snowboardisty a freestyle lyžaře je k dispozici <strong>snowpark</strong> s překážkami různých obtížností. Areál dále nabízí <strong>běžecké tratě</strong> a <strong>sáňkařskou dráhu</strong> dlouhou 2,5 km — ideální pro rodiny s dětmi.</p>
+        </div>
+
+        <figure class="gallery g-2">
+          <div class="gallery-item">
+            <img src="https://cdn.kudyznudy.cz/files/80/8004722c-f9cc-4b6b-9937-0ad74516e528.jpg?v=20250304134550"
+                 alt="Ski areál Dolní Morava" class="h-tall">
+            <figcaption>Dětský spikark Amálka Dolní Morava</figcaption>
+          </div>
+          <div class="gallery-item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Kr%C3%A1lick%C3%BD_Sn%C4%9B%C5%BEn%C3%ADk_1.JPG"
+                 alt="Panorama Králického Sněžníku" class="h-tall">
+            <figcaption>Králický Sněžník (1 423 m n.m.) — zázemí celého areálu</figcaption>
+          </div>
+        </figure>
+      </div>
+
+      <!-- SEKCE: SKY BRIDGE -->
+      <div class="section">
+        <h2 class="section-heading">Sky Bridge 721 — nejdelší visutý most světa</h2>
+
+        <p>Nad údolím Mlýnského potoka visí <strong>Sky Bridge 721</strong> — chodníkový visutý most o délce 721 metrů, který se po svém otevření stal nejdelším svého druhu na světě. Most spojuje chatu Slaměnka u horní stanice lanovky Sněžník s protějším hřebenem Chlumc a zavěšen je ve výšce až <strong>95 metrů nad zemí</strong>.</p>
+
+        <p>Přístup je výhradně na <strong>časované vstupenky</strong> zakoupené předem online — na most vstupuje maximálně 200 osob každých 30 minut. V sezóně a o víkendech jsou vstupenky obvykle vyprodané dny dopředu, rezervaci doporučujeme s předstihem.</p>
+
+        <figure class="gallery g-1">
+          <div class="gallery-item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Sky_Bridge_721_-_spring.jpg"
+                 alt="Sky Bridge 721 — visutý most Dolní Morava" class="h-hero">
+            <figcaption>Sky Bridge 721 — 721 metrů nad dolní Moravou ve výšce 95 m</figcaption>
+          </div>
+        </figure>
+
+        <div class="highlight-box">
+          <h4>Sky Walk — dřevěná vyhlídková plošina</h4>
+          <p>Přímo u chaty Slaměnka se nachází také <strong>Sky Walk</strong> — dřevěná konstrukce 55 metrů nad zemí v nadmořské výšce 1 116 m. Součástí je visutá síť, skluzavka a vyhlídkové prvky s 360° panoramatem. Přístup lanovkou Sněžník zdarma s lanovkou, nebo pěšky.</p>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item"><span class="lbl">Délka mostu</span><span>721 metrů</span></div>
+          <div class="info-item"><span class="lbl">Výška nad zemí</span><span>až 95 metrů</span></div>
+          <div class="info-item"><span class="lbl">Nadm. výška</span><span>1 110–1 116 m n.m.</span></div>
+          <div class="info-item"><span class="lbl">Provoz</span><span>denně 9:00–20:00 (sezóna)</span></div>
+          <div class="info-item"><span class="lbl">Vstupné</span><span>440 Kč e-shop · 490 Kč pokladna · děti 245 Kč</span></div>
+          <div class="info-item"><span class="lbl">Kapacita</span><span>max. 200 osob / 30 min</span></div>
+        </div>
+        <div class="notice blue">🎟 <strong>Rezervace nutná:</strong> Vstupenky je třeba koupit předem na sky-bridge.cz s výběrem časového slotu. Bez rezervace se na most nedostanete.</div>
+      </div>
+
+      <!-- SEKCE: MELORI -->
+      <div class="section">
+        <h2 class="section-heading">MELORI aqua & spa — nový wellness komplex</h2>
+
+        <p>V lednu 2026 otevřel v areálu Dolní Morava zcela nový wellness komplex <strong>MELORI aqua & spa</strong>, do kterého investoři vložili přes <strong>miliardu korun</strong>. Na ploše více než 7 400 m² nabízí rozsáhlou bazénovou zónu, sedm typů saun a řadu doplňkových procedur — vše s výhledem na Králický Sněžník.</p>
+
+        <h3 class="sub-heading sage">Co MELORI nabízí</h3>
+
+        <div class="wellness-grid">
+          <div class="wellness-card">
+            <div class="wellness-icon">🏊</div>
+            <div>
+              <div class="w-title">Bazénová zóna</div>
+              <div class="w-desc">Více než 550 m² vodní plochy — zážitkový bazén, fontánkový bazén se skluzavkami a tobogánem, propojený vnitřní a venkovní bazén s panoramatickým výhledem na hory.</div>
+            </div>
+          </div>
+          <div class="wellness-card">
+            <div class="wellness-icon">🧖</div>
+            <div>
+              <div class="w-title">Saunový svět</div>
+              <div class="w-desc">7 typů saun — medová, bylinná, solná parní lázeň a venkovní saunová zóna s parní místností nad jezírkem, zážitkový stan-sauna a panoramatická ohřívárna.</div>
+            </div>
+          </div>
+          <div class="wellness-card">
+            <div class="wellness-icon">🍵</div>
+            <div>
+              <div class="w-title">Čajovna & relax</div>
+              <div class="w-desc">Venkovní čajovna, privátní wellness centra (2 kabiny), klidová zóna s výhledem. Celková kapacita areálu je 400 osob.</div>
+            </div>
+          </div>
+          <div class="wellness-card">
+            <div class="wellness-icon">🥗</div>
+            <div>
+              <div class="w-title">Bistro</div>
+              <div class="w-desc">Bistro přímo ve wellness komplexu s teplými i studenými pokrmy — ideální doplněk po dlouhém dni na svazích nebo na mostě.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-grid" style="margin-top: 20px;">
+          <div class="info-item"><span class="lbl">Otevření</span><span>31. ledna 2026</span></div>
+          <div class="info-item"><span class="lbl">Provoz</span><span>denně 9:00–22:00</span></div>
+          <div class="info-item"><span class="lbl">Vstupné</span><span>dospělí 890 Kč · děti do 15 let 390 Kč (neomezený vstup do obou zón)</span></div>
+          <div class="info-item"><span class="lbl">Rezervace</span><span>není nutná, vstupenky na pokladně nebo v samoobslužných pokladnách</span></div>
+          <div class="info-item"><span class="lbl">Adresa</span><span>Velká Morava 79, Dolní Morava</span></div>
+          <div class="info-item"><span class="lbl">Web</span><span>melori.cz</span></div>
+        </div>
+      </div>
+
+      <!-- SEKCE: LETNÍ AKTIVITY -->
+      <div class="section">
+        <h2 class="section-heading">Dolní Morava v létě</h2>
+
+        <p>Areál je výborný i mimo zimní sezónu. <strong>Sky Bridge 721 a Sky Walk</strong> fungují celoročně (s výjimkou silného větru), lanovka Sněžník vozí cyklisty i turisty na hřeben. K dispozici jsou horské trasy různé obtížnosti, bobslejová dráha a adrenalinový park.</p>
+
+        <figure class="gallery g-2">
+          <div class="gallery-item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Socha_sl%C5%AF%C5%88%C4%9Bte_na_Kr%C3%A1lick%C3%A9m_Sn%C4%9B%C5%BEn%C3%ADku%2C_Doln%C3%AD_Morava.jpg"
+                 alt="Socha slůněte na Králickém Sněžníku" class="h-medium">
+            <figcaption>Socha slůněte na Králickém Sněžníku — oblíbená turistická zastávka z roku 1932</figcaption>
+          </div>
+          <div class="gallery-item">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/48/Doln%C3%AD_Morava_G._RekaMorava.jpg"
+                 alt="Řeka Morava — Dolní Morava" class="h-medium">
+            <figcaption>Řeka Morava pramení nedaleko odtud — krásné letní turistické území</figcaption>
+          </div>
+        </figure>
+      </div>
+
+      <!-- OSOBNÍ KOMENTÁŘ -->
+      <div class="personal-note">
+        <div class="personal-note-label">✏ Náš komentář</div>
+        <p>Dolní Morava je skvělá v létě i zimě. V zimě doporučujeme ubytování v hotelu Vista nebo v penzionu Pod Slamníkem, ať nechodíte s vybavením daleko od sjezdovky. Rakousko to sice není, ale na pár dnů fajn lyžovačka. Dobře se najíte třeba v restauraci Marcelka a v Lobby Vista.</p>
+        <div class="personal-note-sig">z vlastní zkušenosti</div>
+      </div>
+
+      <!-- PRAKTICKÉ INFORMACE -->
+      <div class="section">
+        <h2 class="section-heading">Praktické informace</h2>
+
+        <h3 class="sub-heading">Ski areál</h3>
+        <div class="info-grid">
+          <div class="info-item"><span class="lbl">Adresa</span><span>Velká Morava, Dolní Morava, Pardubický kraj</span></div>
+          <div class="info-item"><span class="lbl">Skipas</span><span>od 690 Kč dospělí · od 485 Kč děti (online, dynamické ceny)</span></div>
+          <div class="info-item"><span class="lbl">Sezóna</span><span>prosinec – březen (dle sněhových podmínek)</span></div>
+          <div class="info-item"><span class="lbl">Web</span><span>dolnimorava.cz</span></div>
+        </div>
+
+        <h3 class="sub-heading" style="margin-top: 20px;">Ubytování v okolí sjezdovek</h3>
+        <div class="info-grid">
+          <div class="info-item"><span class="lbl">Hotel Vista</span><span>4★ wellness hotel přímo v areálu, restaurace Marcelka a Lobby bar Vista</span></div>
+          <div class="info-item"><span class="lbl">Penzion Pod Slamníkem</span><span>745 m n.m., sjezdovka přímo u dveří, hodnocení 9,3/10 na Booking</span></div>
+        </div>
+
+        <h3 class="sub-heading" style="margin-top: 20px;">Jak se dostat</h3>
+        <div class="info-grid">
+          <div class="info-item"><span class="lbl">Z Brna</span><span>~160 km, cca 2 hodiny (přes Olomouc, Mohelnici, Zábřeh, Králíky)</span></div>
+          <div class="info-item"><span class="lbl">Z Prahy</span><span>~200 km, cca 2,5–3 hodiny (přes Hradec Králové, Žamberk, Králíky)</span></div>
+        </div>
+
+        <div class="notice">⚠ <strong>Tip:</strong> Skipasy i vstupenky na Sky Bridge 721 kupujte předem online — ušetříte peníze i čas ve frontě. V sezóně a o víkendech bývají kapacity Sky Bridge vyprodané dny dopředu.</div>
+      </div>
+
+    </article>
+  </div><!-- /page-wrap -->
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="index.html">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Zpět na rozcestník
+    </a>
+    <span>Dolní Morava · Pardubický kraj</span>
+    <span>&copy; <span id="year"></span> Místa, která stojí za návštěvu</span>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lb-overlay" id="lb" onclick="lbClose(event)">
+    <button class="lb-close" onclick="lbHide()" title="Zavřít">✕</button>
+    <button class="lb-nav lb-prev" onclick="lbStep(-1, event)">&#8249;</button>
+    <button class="lb-nav lb-next" onclick="lbStep(1, event)">&#8250;</button>
+    <div class="lb-inner" onclick="event.stopPropagation()">
+      <img id="lb-img" src="" alt="">
+      <div class="lb-caption" id="lb-cap"></div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const lbItems = [];
+    let lbCurrent = 0;
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const img = item.querySelector('img');
+      const cap = item.querySelector('figcaption');
+      if (!img) return;
+      const idx = lbItems.length;
+      lbItems.push({ src: img.src, cap: cap ? cap.textContent : '' });
+      item.addEventListener('click', () => lbShow(idx));
+    });
+    function lbShow(idx) {
+      lbCurrent = idx;
+      const el = lbItems[idx];
+      document.getElementById('lb-img').src = el.src;
+      document.getElementById('lb-cap').textContent = el.cap;
+      const ov = document.getElementById('lb');
+      ov.classList.remove('active'); void ov.offsetWidth; ov.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function lbHide() { document.getElementById('lb').classList.remove('active'); document.body.style.overflow = ''; }
+    function lbClose(e) { if (e.target === document.getElementById('lb')) lbHide(); }
+    function lbStep(dir, e) {
+      e.stopPropagation();
+      lbCurrent = (lbCurrent + dir + lbItems.length) % lbItems.length;
+      const el = lbItems[lbCurrent];
+      const img = document.getElementById('lb-img');
+      img.style.opacity = '0';
+      setTimeout(() => { img.src = el.src; document.getElementById('lb-cap').textContent = el.cap; img.style.opacity = '1'; }, 150);
+    }
+    document.addEventListener('keydown', e => {
+      if (!document.getElementById('lb').classList.contains('active')) return;
+      if (e.key === 'Escape')     lbHide();
+      if (e.key === 'ArrowLeft')  lbStep(-1, { stopPropagation: () => {} });
+      if (e.key === 'ArrowRight') lbStep(1,  { stopPropagation: () => {} });
+    });
+  </script>
+
+</body>
+</html>
