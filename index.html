@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Místa, která stojí za návštěvu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #141C2B;
+      --parchment: #F8F3EB;
+      --warm:    #EFE6D8;
+      --copper:  #C97942;
+      --sage:    #3D6B52;
+      --muted:   #8A7F74;
+      --white:   #FFFFFF;
+      --card-radius: 16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--parchment);
+      color: var(--ink);
+    }
+
+    /* ═══════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════ */
+    .hero {
+      position: relative;
+      background: var(--ink);
+      overflow: hidden;
+      min-height: 480px;
+      display: flex;
+      align-items: center;
+      padding: 80px 40px 100px;
+    }
+
+    /* mřížka jako mapový papír */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* svítící skvrna vpravo */
+    .hero-glow {
+      position: absolute;
+      top: -120px; right: -80px;
+      width: 560px; height: 560px;
+      background: radial-gradient(circle, rgba(201,121,66,0.22) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      gap: 48px;
+    }
+
+    .hero-text { flex: 1; }
+
+    .hero-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--copper);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--copper);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(40px, 6.5vw, 80px);
+      line-height: 1.0;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .italic {
+      font-style: italic;
+      font-weight: 700;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .hero-sub {
+      margin-top: 22px;
+      font-size: 16px;
+      color: rgba(255,255,255,0.40);
+      line-height: 1.6;
+      max-width: 440px;
+    }
+
+    /* kompas (SVG) */
+    .hero-compass {
+      flex-shrink: 0;
+      opacity: 0.18;
+      width: 200px;
+      align-self: center;
+    }
+
+    /* vlna na spodu */
+    .hero-wave {
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 56px;
+      pointer-events: none;
+    }
+    .hero-wave svg { width: 100%; height: 100%; display: block; }
+
+
+    /* ═══════════════════════════════════════
+       OBSAH
+    ═══════════════════════════════════════ */
+    .content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+
+    /* ── FILTRY ── */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 44px;
+    }
+
+    .filter-btn {
+      background: var(--white);
+      border: 1.5px solid var(--warm);
+      border-radius: 100px;
+      padding: 8px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .filter-btn:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+    }
+
+    .filter-btn.active {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: var(--white);
+    }
+
+    /* ── GRID ── */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 320px;
+      gap: 20px;
+    }
+
+    /* první karta – velká přes 2 sloupce a 2 řádky */
+    .card.featured {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    /* ── KARTA ── */
+    .card {
+      position: relative;
+      border-radius: var(--card-radius);
+      overflow: hidden;
+      text-decoration: none;
+      color: var(--white);
+      display: block;
+      cursor: pointer;
+      /* pro transition při filtrování */
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .card.hidden {
+      display: none;
+    }
+
+    /* obrázek / placeholder */
+    .card-img {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .card:hover .card-img { transform: scale(1.05); }
+
+    .card-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 72px;
+      background: linear-gradient(135deg, #C4B5A0 0%, #A89880 100%);
+    }
+    .card.featured .card-placeholder { font-size: 110px; }
+
+    /* gradient overlay */
+    .card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(10,15,25,0.90) 0%,
+        rgba(10,15,25,0.45) 40%,
+        rgba(10,15,25,0.10) 70%,
+        transparent 100%
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px;
+    }
+
+    .card.featured .card-overlay { padding: 40px; }
+
+    /* štítek – země */
+    .card-tag {
+      position: absolute;
+      top: 18px; left: 18px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      color: rgba(255,255,255,0.90);
+    }
+
+    .card-date {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--white);
+    }
+
+    /* velikosti nadpisu podle karty */
+    .card:not(.featured) .card-title { font-size: 17px; }
+    .card.featured .card-title { font-size: clamp(22px, 2.8vw, 34px); }
+
+    .card-desc {
+      margin-top: 8px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.60);
+      /* skrýt na malých kartách */
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card:not(.featured) .card-desc { display: none; }
+    .card.featured .card-desc { display: -webkit-box; }
+
+    .card-cta {
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--copper);
+      text-decoration: none;
+      transition: gap 0.18s;
+    }
+    .card:hover .card-cta { gap: 12px; }
+
+    /* ═══════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════ */
+    footer {
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 12px;
+      color: #C0B4A8;
+      border-top: 1px solid var(--warm);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { padding: 60px 24px 80px; min-height: auto; }
+      .hero-compass { display: none; }
+      .grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: 280px;
+      }
+      .card.featured {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+      .card.featured .card-desc { display: none; }
+    }
+
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+        grid-auto-rows: 280px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ HERO ══ -->
+  <header class="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Cestovní deník</p>
+        <h1>
+          Místa, která<br/>
+          <span class="italic">stojí za návštěvu</span>
+        </h1>
+        <p class="hero-sub">Nečekaně skvělé výlety a cesty</p>
+      </div>
+
+      <!-- kompas jako dekorace -->
+      <svg class="hero-compass" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="100" cy="100" r="96" stroke="white" stroke-width="1.5"/>
+        <circle cx="100" cy="100" r="72" stroke="white" stroke-width="0.8"/>
+        <circle cx="100" cy="100" r="48" stroke="white" stroke-width="0.8"/>
+        <circle cx="100" cy="100" r="4" fill="white"/>
+        <!-- šipky kompasu -->
+        <path d="M100 4 L108 96 L100 88 L92 96 Z" fill="white"/>
+        <path d="M100 196 L108 104 L100 112 L92 104 Z" fill="rgba(255,255,255,0.35)"/>
+        <path d="M4 100 L96 92 L88 100 L96 108 Z" fill="rgba(255,255,255,0.35)"/>
+        <path d="M196 100 L104 92 L112 100 L104 108 Z" fill="white"/>
+        <!-- drobné čárky -->
+        <line x1="100" y1="4" x2="100" y2="16" stroke="white" stroke-width="2"/>
+        <line x1="100" y1="184" x2="100" y2="196" stroke="white" stroke-width="2"/>
+        <line x1="4" y1="100" x2="16" y2="100" stroke="white" stroke-width="2"/>
+        <line x1="184" y1="100" x2="196" y2="100" stroke="white" stroke-width="2"/>
+        <!-- diagonální čárky -->
+        <line x1="31" y1="31" x2="39" y2="39" stroke="white" stroke-width="1" opacity="0.5"/>
+        <line x1="161" y1="31" x2="169" y2="39" stroke="white" stroke-width="1" opacity="0.5" transform="scale(-1,1) translate(-200,0)"/>
+        <line x1="31" y1="169" x2="39" y2="161" stroke="white" stroke-width="1" opacity="0.5"/>
+        <line x1="169" y1="169" x2="161" y2="161" stroke="white" stroke-width="1" opacity="0.5"/>
+        <!-- písmena světových stran -->
+        <text x="96" y="22" fill="white" font-size="13" font-family="serif" font-weight="bold">N</text>
+        <text x="96" y="188" fill="white" font-size="12" font-family="serif" opacity="0.5">S</text>
+        <text x="10" y="104" fill="white" font-size="12" font-family="serif" opacity="0.5">W</text>
+        <text x="183" y="104" fill="white" font-size="12" font-family="serif">E</text>
+      </svg>
+    </div>
+
+    <div class="hero-wave">
+      <svg viewBox="0 0 1440 56" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,56 C240,10 480,50 720,28 C960,6 1200,46 1440,20 L1440,56 Z" fill="#F8F3EB"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ══ OBSAH ══ -->
+  <main class="content">
+
+    <!-- FILTRY — přidávej tlačítka jen pro skutečně existující podstránky -->
+    <div class="filters" role="group" aria-label="Filtrovat výlety">
+      <button class="filter-btn active" data-filter="all">✦ Vše</button>
+      <button class="filter-btn" data-filter="czechia">🇨🇿 Česká republika</button>
+      <button class="filter-btn" data-filter="kultura">🏛 Kultura &amp; historie</button>
+    </div>
+
+    <!--
+      ╔══════════════════════════════════════════════════════════╗
+      ║  JAK PŘIDAT NOVÝ VÝLET                                   ║
+      ║  1. Zkopíruj blok <a class="card ...">                   ║
+      ║  2. Vyplň href, data-tags, src obrázku, datum, název     ║
+      ║  3. data-tags: čárkou oddělené štítky pro filtrování     ║
+      ║  4. Přidej odpovídající <button> do sekce FILTRY výše    ║
+      ║  5. Chceš velkou kartu? Přidej třídu "featured"          ║
+      ║  6. Nemáš fotku? Nahraď <img> za <div class="card-placeholder">🏔</div>  ║
+      ╚══════════════════════════════════════════════════════════╝
+    -->
+    <div class="grid" id="tripGrid">
+
+      <!-- ★ VÝLET 1 – featured (velká karta) -->
+      <a class="card featured" href="dolni-kounice-rosa-coeli.html" data-tags="czechia,kultura">
+        <img class="card-img"
+             src="https://www.regiontourist.cz/uploads/what_to_do/1690/klaster-rosa-coeli-kounice114.jpg"
+             alt="Klášter Rosa coeli, Dolní Kounice" />
+        <span class="card-tag">🇨🇿 Jihomoravský kraj</span>
+        <div class="card-overlay">
+          <p class="card-date">Dolní Kounice · zal. 1181</p>
+          <h2 class="card-title">Klášter Rosa coeli — perla moravského středověku</h2>
+          <p class="card-desc">Zřícenina nejstaršího ženského kláštera na Moravě s historií od roku 1181 — gotické klenby bez střechy, parléřovský portál a tisíc let příběhů ukrytých ve zdech.</p>
+          <span class="card-cta">
+            Číst příběh
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </div>
+      </a>
+
+    </div><!-- /grid -->
+
+    <!-- zpráva, když nic nesedí na filtr -->
+    <p id="emptyMsg" style="display:none; text-align:center; padding:60px 0; color:var(--muted); font-size:15px;">
+      Pro tuto kategorii zatím žádný výlet není. Brzy přibude! ✈︎
+    </p>
+
+  </main>
+
+  <footer>
+    &copy; <span id="year"></span> Místa, která stojí za návštěvu
+  </footer>
+
+  <script>
+    // ── ROK V PATIČCE ──
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ── FILTROVÁNÍ KARET ──
+    const btns  = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.card');
+    const empty = document.getElementById('emptyMsg');
+
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+
+        // aktivní tlačítko
+        btns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        let visible = 0;
+        cards.forEach(card => {
+          const tags = card.dataset.tags ? card.dataset.tags.split(',') : [];
+          const show = (f === 'all') || tags.includes(f);
+          card.classList.toggle('hidden', !show);
+          if (show) visible++;
+        });
+
+        // pokud featured není vidět, dej první viditelné kartě featured třídu
+        // (volitelné – necháme grid jak je, jen ukryjeme)
+        empty.style.display = visible === 0 ? 'block' : 'none';
+      });
+    });
+  </script>
+
+</body>
+</html>
